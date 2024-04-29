@@ -4,23 +4,26 @@ import productData from '../../data.js'
 import asyncHandler from "../utils/asyncHandler.js"
 import apiResponse from "../utils/apiResponse.js"
 import apiError from "../utils/apiError.js"
+import APIFilters from "../utils/apiFilters.js"
 
 
-export const getAllProduct = asyncHandler(async (req, res, next)=>{
-    console.log("hello")
-    await Product.find()
-        .then((data)=>{
-            if(!data){
-              throw new apiError(404, "Data not found");
-            }
-            res
-                .status(200)
-                .json(
-                     new apiResponse(200, "Data Fetched Successfully", data)
-                )
-        })
-        .catch((error)=>next(error));    
-})
+// Create new Product   =>  /api/v1/products
+export const getAllProducts = asyncHandler(async (req, res) => {
+  const resPerPage = 4;
+  const apiFilters = new APIFilters(Product, req.query).search().filters();
+
+  let products = await apiFilters.query;
+  let filteredProductsCount = products.length;
+
+  apiFilters.pagination(resPerPage);
+  products = await apiFilters.query.clone();
+
+  res.status(200).json({
+    resPerPage,
+    filteredProductsCount,
+    products,
+  });
+});
 
 //2. add new product
 export const addNewProduct = asyncHandler(async (req, res, next)=>{
@@ -88,7 +91,6 @@ export const updateProduct = asyncHandler(async (req, res, next)=>{
 export const deleteProduct = asyncHandler( async (req, res, next) => {
     await Product.findByIdAndDelete(req.params?.productId)
       .then((data)=>{
-        console.log(data);
         if(!data){
           throw new apiError(404, "Internal server error")
         }
