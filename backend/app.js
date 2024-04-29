@@ -39,7 +39,7 @@ import apiResponse from "./utils/apiResponse.js";
 app.use('/api/v1/product', productRouter);
 
 
-app.use((err, _, res)=>{
+app.use((err, req, res, next)=>{
     res
     .status(err.statusCode || 500)
     .json(
