@@ -3,7 +3,7 @@ import { addNewProduct, deleteProduct, getAllProduct, getSingleProduct, updatePr
 
 const router = express.Router();
 
-router.route('/get-all-product').get(getAllProduct);
+router.route('/get-all-products').get(getAllProduct);
 router.route('/get-single-product/:productId').get(getSingleProduct);
 router.route('/add-new-product').post(addNewProduct);
 router.route('/update-product').patch(updateProduct);

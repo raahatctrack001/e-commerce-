@@ -33,8 +33,17 @@ app.use(cookieParser());
 app.use(express.static("public"));
     
     
-
 //importing routes
 import productRouter from "./routes/product.routes.js";
+import apiResponse from "./utils/apiResponse.js";
 app.use('/api/v1/product', productRouter);
+
+
+app.use((err, _, res)=>{
+    res
+    .status(err.statusCode || 500)
+    .json(
+        new apiResponse(err.statusCode || 500, err.message || "Internal Server Error", null)
+    );
+})
 
