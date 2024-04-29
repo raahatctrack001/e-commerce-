@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from 'dotenv';
 import { connectDatabase } from "./config/database.connect.js";
+import cookieParser from 'cookie-parser'
 
 dotenv.config(
     {
@@ -21,7 +22,19 @@ connectDatabase()
         console.log(error);
     })
 
-
+app.use(express.json({limit: "16kb"}));
+app.use(express.urlencoded(
+    {
+        extended: true,
+        limit: "16kb",
+    }
+));
+app.use(cookieParser());
+app.use(express.static("public"));
+    
+    
 
 //importing routes
+import productRouter from "./routes/product.routes.js";
+app.use('/api/v1/product', productRouter);
 

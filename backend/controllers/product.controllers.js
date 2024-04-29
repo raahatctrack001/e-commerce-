@@ -1,8 +1,13 @@
 
 //1. get all products
 
-export const getAllProduct = async ()=>{
+import Product from "../models/product.models.js"
 
+export const getAllProduct = async ()=>{
+    const products = await Product.find();
+    if(!products){
+        throw Error
+    }
 }
 
 //2. add new product
