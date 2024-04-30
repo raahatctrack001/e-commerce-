@@ -1,10 +1,13 @@
 import express from 'express';
 import { 
     forgotPassword,
+    getUserProfile,
     loginUser,
     logout,
     registerUser, 
-    resetPassword
+    resetPassword,
+    updatePassword,
+    updateProfile
 } from '../controllers/auth.controller.js';
 import { verifyUser } from '../middlewares/auth.middlewares.js';
 
@@ -15,6 +18,9 @@ router.route("/login").post(loginUser);
 router.route("/logout").post(verifyUser, logout);
 router.route("/password/forgot").post(forgotPassword);
 router.route("/password/reset/:token").put(resetPassword);
+router.route("/me").get(verifyUser, getUserProfile);
+router.route("/me/update").put(verifyUser, updateProfile);
+router.route("/password/update").put(verifyUser, updatePassword);
 
 
 export default router;  

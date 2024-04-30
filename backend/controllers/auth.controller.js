@@ -162,3 +162,29 @@ export const updatePassword = asyncHandler(async (req, res, next) => {
     new apiResponse(200, "password updated")
   )
 });
+
+export const updateProfile = asyncHandler(async (req, res, next) => {
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+  };
+
+  const user = await User.findByIdAndUpdate(req.user._id, newUserData, {
+    new: true,
+  });
+
+  res
+    .status(200)
+    .json(
+    new apiResponse(200, "user updated", user)
+  )
+});
+
+// Get all Users - ADMIN  =>  /api/v1/admin/users
+export const allUsers = asyncHandler(async (req, res, next) => {
+  const users = await User.find();
+
+  res.status(200).json(
+    new apiResponse(200, "all users fetched", users)
+  )
+});
