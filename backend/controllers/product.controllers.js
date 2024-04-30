@@ -86,7 +86,6 @@ export const updateProduct = asyncHandler(async (req, res, next)=>{
       .catch(error=>next(error))
 })
 
-
 //5. delete product
 export const deleteProduct = asyncHandler( async (req, res, next) => {
     await Product.findByIdAndDelete(req.params?.productId)

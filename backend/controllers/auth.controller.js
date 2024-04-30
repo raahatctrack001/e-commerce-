@@ -1,13 +1,11 @@
-import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
-import User from "../models/user.js";
-import { getResetPasswordTemplate } from "../utils/emailTemplates.js";
-import ErrorHandler from "../utils/errorHandler.js";
+import asyncHandler from "../utils/asyncHandler.js"; 
 import sendToken from "../utils/sendToken.js";
-import sendEmail from "../utils/sendEmail.js";
-import crypto from "crypto";
+import apiError from "../utils/apiError.js";
+import User from "../models/user.models.js";
+
 
 // Register user   =>  /api/v1/register
-export const registerUser = catchAsyncErrors(async (req, res, next) => {
+export const registerUser = asyncHandler(async (req, res, next) => {
   const { name, email, password } = req.body;
 
   const user = await User.create({
@@ -20,32 +18,32 @@ export const registerUser = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Login user   =>  /api/v1/login
-export const loginUser = catchAsyncErrors(async (req, res, next) => {
+export const loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(new ErrorHandler("Please enter email & password", 400));
+    throw new apiError(404, "Please enter email & password");
   }
 
   // Find user in the database
   const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
-    return next(new ErrorHandler("Invalid email or password", 401));
+    throw new apiError(401, "Invalid email or password");
   }
 
   // Check if password is correct
   const isPasswordMatched = await user.comparePassword(password);
 
   if (!isPasswordMatched) {
-    return next(new ErrorHandler("Invalid email or password", 401));
+    throw new apiError(401, "Invalid email or password");
   }
 
   sendToken(user, 200, res);
 });
 
 // Logout user   =>  /api/v1/logout
-export const logout = catchAsyncErrors(async (req, res, next) => {
+export const logout = asyncHandler(async (req, res, next) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
     httpOnly: true,

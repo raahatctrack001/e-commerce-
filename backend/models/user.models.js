@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import bcrypt from "bcryptjs";
+import mongoose, { mongo } from "mongoose";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
@@ -73,4 +73,5 @@ userSchema.methods.getResetPasswordToken = function () {
   return resetToken;
 };
 
-export default mongoose.model("User", userSchema);
+const User = new mongoose.model("User", userSchema);
+export default User;
