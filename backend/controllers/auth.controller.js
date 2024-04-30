@@ -182,6 +182,8 @@ export const updateProfile = asyncHandler(async (req, res, next) => {
 
 // Get all Users - ADMIN  =>  /api/v1/admin/users
 export const allUsers = asyncHandler(async (req, res, next) => {
+  if(req.user.role !== 'admin')
+    throw new apiError(404, "You are not an admin. are you?")
   const users = await User.find();
 
   res.status(200).json(
