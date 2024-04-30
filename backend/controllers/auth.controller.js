@@ -188,3 +188,36 @@ export const allUsers = asyncHandler(async (req, res, next) => {
     new apiResponse(200, "all users fetched", users)
   )
 });
+
+export const updateUser = asyncHandler(async (req, res, next) => {
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+    role: req.body.role,
+  };
+
+  const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
+    new: true,
+  });
+
+  res.status(200).json(
+    new apiResponse(200, "user updated", user)
+  )
+});
+
+// Delete User - ADMIN  =>  /api/v1/admin/users/:id
+export const deleteUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user)  
+     throw new apiError(404, `User not found with id: ${req.params.id}`)
+   
+
+  // TODO - Remove user avatar from cloudinary
+
+  await user.deleteOne();
+
+  res.status(200).json(
+    new apiResponse(200, "user deleted")
+  )
+});
