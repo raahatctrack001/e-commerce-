@@ -37,7 +37,9 @@ export const addNewProduct = asyncHandler(async (req, res, next)=>{
   //      })
   //      .catch((error)=>next(error));
 
-  console.log(req.body)
+  // if(req.user?.role !== 'admin'){
+  //   throw new apiError(400, "Only admin can add new products");
+  // }
   await Product.create(req.body, { new: true })
       .then((data)=>{
         if(!data){
