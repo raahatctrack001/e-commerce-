@@ -47,3 +47,20 @@ export const myOrders = asyncHandler(async (req, res, next) => {
   });
   
  
+// Get order details  =>  /api/v1/orders/:id
+export const getOrderDetails = asyncHandler(async (req, res, next) => {
+    const order = await Order.findById(req.params?.orderId).populate(
+      "user",
+      "name email"
+    );
+  
+    if (!order) {
+      throw new apiError(404, "No Order found with this ID");
+    }
+  
+    return res
+    .status(200)
+    .json(
+        new apiResponse(200, "order details fetched!", order)
+    );
+  });
