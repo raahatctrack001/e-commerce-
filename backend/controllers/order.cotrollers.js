@@ -1,4 +1,5 @@
 import Order from "../models/order.model.js";
+import apiError from "../utils/apiError.js";
 import apiResponse from "../utils/apiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 
@@ -26,7 +27,7 @@ export const newOrder = asyncHandler(async (req, res, next) => {
     paymentInfo,
     user: req.user._id,
   });
-
+  console.log(order)
   return res
   .status(200)
   .json(
@@ -34,3 +35,15 @@ export const newOrder = asyncHandler(async (req, res, next) => {
     )
 });
 
+// Get current user orders  =>  /api/v1/me/orders
+export const myOrders = asyncHandler(async (req, res, next) => {
+    const orders = await Order.find({ user: req.user?._id });
+  
+    return res
+    .status(200)
+    .json(
+        new apiResponse(200, "order fetched!", orders)
+    );
+  });
+  
+ 
