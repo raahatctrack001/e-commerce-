@@ -45,8 +45,7 @@ export const myOrders = asyncHandler(async (req, res, next) => {
     .json(
         new apiResponse(200, "order fetched!", orders)
     );
-  });
-  
+  });  
  
 // Get order details  =>  /api/v1/orders/:id
 export const getOrderDetails = asyncHandler(async (req, res, next) => {
@@ -113,6 +112,7 @@ export const allOrders = asyncHandler(async (req, res, next) => {
         })
         .catch(error=>next(error));  
   });
+  
   // Delete order  =>  /api/v1/admin/orders/:id
 export const deleteOrder = asyncHandler(async (req, res, next) => {
     const order = await Order.findById(req.params.id);

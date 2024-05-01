@@ -50,7 +50,7 @@ export const createProductReview = asyncHandler(async (req, res, next) => {
   });
   
   // Get product reviews   =>  /api/v1/reviews
-  export const getProductReviews = asyncHandler(async (req, res, next) => {
+export const getProductReviews = asyncHandler(async (req, res, next) => {
     const product = await Product.findById(req.query.id);
   
     if (!product) {
@@ -65,7 +65,7 @@ export const createProductReview = asyncHandler(async (req, res, next) => {
   });
   
   // Delete product review   =>  /api/v1/admin/reviews
-  export const deleteReview = asyncHandler(async (req, res, next) => {
+export const deleteReview = asyncHandler(async (req, res, next) => {
     let product = await Product.findById(req.query.productId);
   
     if (!product) {

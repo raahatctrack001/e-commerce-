@@ -12,7 +12,4 @@ router.route('/post-review').post(verifyUser, createProductReview);
 router.route('/product-reviews/:productId').get(getProductReviews);
 router.route('/delete-review/:reviewId').delete(deleteReview);
 
-
-
-
 export default router;
