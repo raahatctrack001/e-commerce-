@@ -113,4 +113,19 @@ export const allOrders = asyncHandler(async (req, res, next) => {
         })
         .catch(error=>next(error));  
   });
+  // Delete order  =>  /api/v1/admin/orders/:id
+export const deleteOrder = asyncHandler(async (req, res, next) => {
+    const order = await Order.findById(req.params.id);
   
+    if (!order) {
+      throw new apiError(404, "No Order found with this ID");
+    }
+  
+    await order.deleteOne();
+  
+    return res
+    .status(200)
+    .json(
+        new apiResponse(200, "order deleted!", null)
+    );
+  });
